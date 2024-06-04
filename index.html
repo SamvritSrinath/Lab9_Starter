@@ -86,8 +86,20 @@
       <button>Trigger a Global Error</button>
     </section>
   </main>
-
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
+    /**
+     * We are going to specify a custom error message for the form button and conduct try/catch on the console calculator
+     * We will also trigger a global error
+     */
+    class CustomError extends Error {
+        constructor(message) {
+            super(message + " - Custom Error For CSE 110");
+            this.name = 'CSE110CustomError';
+        }
+    }
+
+    //add event listener for the form button
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -95,13 +107,124 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+
+      //check numbers for firstNum and secondNum
+      try {
+        if(isNaN(firstNum) || isNaN(secondNum)) {
+          throw new CustomError('Please enter valid numbers, numbers passed in are not valid');
+        }
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      } catch (error) {
+        if(error instanceof CustomError) {
+          console.error(error);
+        } else {
+          console.error('An error occurred in the form button event listener that could not be caught by the CustomError class');
+        }
+        output.innerHTML = 'An error occurred';
+      } finally {
+        console.log('Form button event listener has completed');
+      }
+      // output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
+
     // Start your code here
+    //add event listener for each console.log
+    errorBtns[0].addEventListener('click', () => {
+        console.log('This is an output message for clicking on the Console Log button');
+    });
+
+    //add event listener for each console.error
+    errorBtns[1].addEventListener('click', () => {
+        console.error('This is an error message for clicking on the Console Error button');
+    });
+
+
+    //add event listener for console.count (should be 0)
+    errorBtns[2].addEventListener('click', () => {
+        console.count('Click on Count');
+    });
+
+    //add event listener for console.warn
+    errorBtns[3].addEventListener('click', () => {
+        console.warn('This is a warning message for clicking on the Console Warn button');
+    });
+
+    //add event listener for console.assert
+    errorBtns[4].addEventListener('click', () => {
+        console.assert(2 % 2 === 1, 'This is an assertion message for clicking on the Console Assert button. If you see this message, the assertion is false(i.e. 2 % 2 === 1 is false)');
+    });
+
+    //add event listener for console.clear --> clears the console
+    errorBtns[5].addEventListener('click', () => {
+        console.clear();
+    });
+
+    //add event listener for console.dir
+    errorBtns[6].addEventListener('click', () => {
+        console.dir(document, showHidden = true);
+    });
+
+    //add event listener for console.dirxml
+    errorBtns[7].addEventListener('click', () => {
+        console.dirxml(document);
+    });
+
+    //add event listener for console.group
+    errorBtns[8].addEventListener('click', () => {
+        console.group('Group Start');
+        console.log('This is a message inside the group');
+    });
+
+    //add event listener for console.groupEnd
+    errorBtns[9].addEventListener('click', () => {
+        console.groupEnd();
+        console.log('This is a message outside the group');
+    });
+
+    //add event listener for console.table
+    errorBtns[10].addEventListener('click', () => {
+        console.table([
+            { name: 'Samvrit', age: 19 },
+            { name: 'Matteo', age: 20 },
+            { name: 'Prof Powell', age: 45 } //I don't know if this is factual :D
+        ]);
+    });
+
+    //start the timer event listener
+    errorBtns[11].addEventListener('click', () => {
+        console.time('Timer');
+    });
+
+    //end the timer event listener
+    errorBtns[12].addEventListener('click', () => {
+        console.timeEnd('Timer');
+    });
+    
+    //trace the console event listener
+    errorBtns[13].addEventListener('click', () => {
+        console.trace('This is a trace message');
+    });
+
+    //trigger a global error event listener
+    window.TrackJS && TrackJS.install({
+        token: "c422f42ed5fb4e41a2293c8eaf1a58b0",
+        application: "cse110-lab9"
+    });
+    window.onerror = () => {
+        console.error('Global Error Triggered. Diagnostic Info');
+        
+    }
+    errorBtns[14].addEventListener('click', () => {
+
+        throw new Error('This is a global error message for clicking on the Trigger a Global Error button');
+    });
+    
     // You may move this JS to another file if you wish
+
+    
   </script>
 </body>
 
