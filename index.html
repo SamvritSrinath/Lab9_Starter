@@ -110,7 +110,7 @@
 
       //check numbers for firstNum and secondNum
       try {
-        if(isNaN(firstNum) || isNaN(secondNum)) {
+        if(isNaN(firstNum) || isNaN(secondNum) || firstNum === '' || secondNum === '') {
           throw new CustomError('Please enter valid numbers, numbers passed in are not valid');
         }
         else if(operator === '/' && secondNum == 0) {
