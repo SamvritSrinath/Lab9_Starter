@@ -216,16 +216,12 @@
         token: "c422f42ed5fb4e41a2293c8eaf1a58b0",
         application: "cse110-lab9-2"
     });
+    window.onerror = (message,source,lineno,colno, error) => {
+      console.log('This is the global error message as it is caught by the window object'); //commenting this due to it logging as well as tracking. 
+      TrackJS.track('This is the global error message as it is caught by the TrackJS library');
+    }
     errorBtns[14].addEventListener('click', () => {
-
-
-        window.onerror = Error('This is the global error message');
-        if(window.onerror){
-          console.log('This is the global error message as it is caught by the window object'); //commenting this due to it logging as well as tracking. 
-          TrackJS.track('This is the global error message as it is caught by the TrackJS library');
-        }else {
-          console.error('No global error present');
-        }
+        throw new Error('This is a global error message when you click on the "Trigger a Global Error" button');
     });
     
     // You may move this JS to another file if you wish
