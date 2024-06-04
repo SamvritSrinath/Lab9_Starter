@@ -221,7 +221,7 @@
 
         window.onerror = Error('This is the global error message');
         if(window.onerror){
-          //console.warn('This is the global error message as it is caught by the window object');
+          console.log('This is the global error message as it is caught by the window object');
           TrackJS.track('This is the global error message as it is caught by the TrackJS library');
         }else {
           console.error('No global error present');
